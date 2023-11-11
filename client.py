@@ -4,7 +4,7 @@ import socket
 IP = '127.0.0.1'
 PORT = 25565
 MAX_PACKET = 1024
-
+#test
 
 LOG_FORMAT = '%(levelname)s | %(asctime)s | %(processName)s | %(message)s'
 LOG_LEVEL = logging.DEBUG
