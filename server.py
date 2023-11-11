@@ -78,7 +78,7 @@ def main():
         s_socket.close()
 
 
-if _name_ == '_main_':
+if __name__ == '_main_':
     if not os.path.isdir(LOG_DIR):
         os.makedirs(LOG_DIR)
     logging.basicConfig(format=LOG_FORMAT, filename=LOG_FILE, level=LOG_LEVEL)
