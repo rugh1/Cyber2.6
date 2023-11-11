@@ -4,7 +4,7 @@ import socket
 IP = '127.0.0.1'
 PORT = 25565
 MAX_PACKET = 1024
-#test
+
 
 LOG_FORMAT = '%(levelname)s | %(asctime)s | %(processName)s | %(message)s'
 LOG_LEVEL = logging.DEBUG
@@ -12,7 +12,7 @@ LOG_DIR = 'log'
 LOG_FILE = LOG_DIR + '/client.log'
 
 COMMANDS = ["EXIT", "NAME", "RAND", "TIME"]
-INPUT_MESSAGE = "enter request from EXIT/NAME/RAND/TIME"
+INPUT_MESSAGE = "enter request from EXIT/NAME/RAND/TIME: \n"
 
 def main():
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -33,7 +33,7 @@ def main():
         logging.error(f"error found {err}")
 
 
-if __name__ == '_main_':
+if __name__ == '__main__':
     if not os.path.isdir(LOG_DIR):
         os.makedirs(LOG_DIR)
     logging.basicConfig(format=LOG_FORMAT, filename=LOG_FILE, level=LOG_LEVEL)

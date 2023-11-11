@@ -31,7 +31,6 @@ def com_rand():
 
 
 def com_exit(comm_socket):
-    # logging.debug("Exiting:")
     comm_socket.close()
 
 
@@ -52,15 +51,15 @@ def main():
                     if request == "TIME":
                         time = com_time()
                         comm.send(time.encode())
-                        logging.debug(f"sending TIME {time}")
+                        logging.debug(f"requested: {request} sending TIME {time}")
                     if request == "RAND":
-                        rnd = com_time()
+                        rnd = com_rand()
                         comm.send(rnd.encode())
-                        logging.debug(f"sending RAND {rnd}")
+                        logging.debug(f"requested: {request} sending RAND {rnd}")
                     if request == "NAME":
                         name = com_name()
                         comm.send(com_name().encode())
-                        logging.debug(f"sending NAME {name}")
+                        logging.debug(f"requested: {request} sending NAME {name}")
                     if request == "EXIT":
                         ok = False
             except socket.error as err:
@@ -78,10 +77,10 @@ def main():
         s_socket.close()
 
 
-if __name__ == '_main_':
+if __name__ == '__main__':
     if not os.path.isdir(LOG_DIR):
         os.makedirs(LOG_DIR)
     logging.basicConfig(format=LOG_FORMAT, filename=LOG_FILE, level=LOG_LEVEL)
 
-    assert com_name() == SERVER_NAME and 0 < com_rand() < 11 and com_time() == datetime.now().strftime("%H:%M:%S")
+    assert com_name() == SERVER_NAME and 0 < int(com_rand()) < 11 and com_time() == datetime.now().strftime("%H:%M:%S")
     main()
