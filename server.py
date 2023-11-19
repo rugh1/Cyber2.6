@@ -13,36 +13,60 @@ IP = '127.0.0.1'
 PORT = 25565
 QUEUE_LEN = 1
 MAX_PACKET = 4
-DISCONNECT_MESSEGE = "bye now "
+DISCONNECT_MESSAGE = "bye now "
 
-LOG_FORMAT = '%(levelname)s | %(asctime)s | %(processName)s | %(message)s'
+LOG_FORMAT = '%(levelness)s | %(pastime)s | %(processName)s | %(message)s'
 LOG_LEVEL = logging.DEBUG
 LOG_DIR = 'log'
 LOG_FILE = LOG_DIR + '/server.log'
 
 
-def double_sep(str):
-    s = ''
-    for char in str:
-        s += char
-        if char == SEPERATOR:
-            s += char
+def send(connected_socket, msg):
+    """
+    send to client using protocol
+
+    :param connected_socket: a socket connected to client
+    :param msg: this is a second param
+    :returns: nothing
+    """
+    msg = str(len(msg)) + SEPERATOR + msg
+    connected_socket.send(msg.encode())
 
 
 def com_name():
+    """
+        returns server name
+
+        :returns: server name
+    """
     return SERVER_NAME
 
 
 def com_time():
+    """
+        returns current time in %H:%M:%S format
+
+        :returns: current time in %H:%M:%S format
+    """
     now = datetime.now()
     return now.strftime("%H:%M:%S")
 
 
 def com_rand():
+    """
+        returns random int between 1 and 10
+
+        :returns:  random int between 1 and 10
+    """
     return str(random.randint(1, 10))
 
 
 def com_exit(comm_socket):
+    """
+        closing socket
+
+        :returns: nothing
+     """
     comm_socket.close()
 
 
@@ -60,12 +84,13 @@ def main():
                 ok = True
                 while ok:
                     request = comm.recv(MAX_PACKET).decode().replace(' ', '').lower()
-                    if(request != 'exit'):
-                        #hi nir here is a nice comment im shocked this type of thing is possible and so simple im literally shaking 😲
-                        func = getattr(thismodule, f'com_{request}') 
+                    if request != 'exit':
+                        # hi nir here is a nice comment im shocked this type of thing is possible and so simple
+                        # im literally shaking 😲
+                        func = getattr(thismodule, f'com_{request}')
                         data_to_send = func()
                         logging.debug(f"requested: {request} sending {data_to_send}")
-                        comm.send(data_to_send.encode())
+                        send(comm, data_to_send)
                     else:
                         ok = False
             except socket.error as err:
@@ -77,8 +102,8 @@ def main():
                 logging.error(str(err))
                 fine = False
             finally:
-                logging.debug(f"EXITING")
-                comm.send(DISCONNECT_MESSEGE.encode())
+                logging.debug(f"closing connection with client")
+                send(comm, DISCONNECT_MESSAGE)
                 com_exit(comm)
     except socket.error as err:
         print(err)
