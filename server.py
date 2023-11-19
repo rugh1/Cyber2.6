@@ -15,7 +15,7 @@ QUEUE_LEN = 1
 MAX_PACKET = 4
 DISCONNECT_MESSAGE = "bye now "
 
-LOG_FORMAT = '%(levelness)s | %(pastime)s | %(processName)s | %(message)s'
+LOG_FORMAT = '%(levelname)s | %(asctime)s | %(processName)s | %(message)s'
 LOG_LEVEL = logging.DEBUG
 LOG_DIR = 'log'
 LOG_FILE = LOG_DIR + '/server.log'
