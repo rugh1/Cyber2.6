@@ -3,7 +3,11 @@ import socket
 from datetime import datetime
 import random
 import logging
+import sys
 
+thismodule = sys.modules[__name__]
+
+SEPERATOR = '!'
 SERVER_NAME = 'my_server'
 IP = '127.0.0.1'
 PORT = 25565
@@ -15,6 +19,14 @@ LOG_FORMAT = '%(levelname)s | %(asctime)s | %(processName)s | %(message)s'
 LOG_LEVEL = logging.DEBUG
 LOG_DIR = 'log'
 LOG_FILE = LOG_DIR + '/server.log'
+
+
+def double_sep(str):
+    s = ''
+    for char in str:
+        s += char
+        if char == SEPERATOR:
+            s += char
 
 
 def com_name():
@@ -47,24 +59,22 @@ def main():
             try:
                 ok = True
                 while ok:
-                    request = comm.recv(MAX_PACKET).decode()
-                    if request == "TIME":
-                        time = com_time()
-                        comm.send(time.encode())
-                        logging.debug(f"requested: {request} sending TIME {time}")
-                    if request == "RAND":
-                        rnd = com_rand()
-                        comm.send(rnd.encode())
-                        logging.debug(f"requested: {request} sending RAND {rnd}")
-                    if request == "NAME":
-                        name = com_name()
-                        comm.send(com_name().encode())
-                        logging.debug(f"requested: {request} sending NAME {name}")
-                    if request == "EXIT":
+                    request = comm.recv(MAX_PACKET).decode().replace(' ', '').lower()
+                    if(request != 'exit'):
+                        #hi nir here is a nice comment im shocked this type of thing is possible and so simple im literally shaking 😲
+                        func = getattr(thismodule, f'com_{request}') 
+                        data_to_send = func()
+                        logging.debug(f"requested: {request} sending {data_to_send}")
+                        comm.send(data_to_send.encode())
+                    else:
                         ok = False
             except socket.error as err:
                 print(err)
                 logging.error("error found in the recv phase: " + str(err))
+                fine = False
+            except Exception as err:
+                print(err)
+                logging.error(str(err))
                 fine = False
             finally:
                 logging.debug(f"EXITING")

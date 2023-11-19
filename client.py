@@ -1,6 +1,9 @@
 import logging
 import os
 import socket
+
+
+
 IP = '127.0.0.1'
 PORT = 25565
 MAX_PACKET = 1024
@@ -13,6 +16,8 @@ LOG_FILE = LOG_DIR + '/client.log'
 
 COMMANDS = ["EXIT", "NAME", "RAND", "TIME"]
 INPUT_MESSAGE = "enter request from EXIT/NAME/RAND/TIME: \n"
+SEPERATOR = '!'
+
 
 def main():
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
