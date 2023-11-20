@@ -1,3 +1,8 @@
+"""
+Author: Rugh1
+Date: 20.11.2023
+Description: server  for cyber2.6 workt
+"""
 import os
 import socket
 from datetime import datetime
@@ -27,7 +32,7 @@ def send(connected_socket, msg):
 
     :param connected_socket: a socket connected to client
     :param msg: this is a second param
-    :returns: nothing
+    :returns: None
     """
     msg = str(len(msg)) + SEPERATOR + msg
     connected_socket.send(msg.encode())
@@ -38,6 +43,7 @@ def com_name():
         returns server name
 
         :returns: server name
+        :rtype: string
     """
     return SERVER_NAME
 
@@ -47,6 +53,7 @@ def com_time():
         returns current time in %H:%M:%S format
 
         :returns: current time in %H:%M:%S format
+        :rtype: string
     """
     now = datetime.now()
     return now.strftime("%H:%M:%S")
@@ -57,6 +64,7 @@ def com_rand():
         returns random int between 1 and 10
 
         :returns:  random int between 1 and 10
+        :rtype: string
     """
     return str(random.randint(1, 10))
 
@@ -65,12 +73,16 @@ def com_exit(comm_socket):
     """
         closing socket
 
-        :returns: nothing
+        :returns: None
      """
     comm_socket.close()
 
 
 def main():
+    """
+        main connect sockets and handle everything 
+        :returns: None
+    """
     s_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         s_socket.bind((IP, PORT))

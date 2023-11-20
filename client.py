@@ -1,3 +1,8 @@
+"""
+Author: Rugh1
+Date: 20.11.2023
+Description: client  for cyber2.6 work
+"""
 import logging
 import os
 import socket
@@ -33,7 +38,13 @@ def recv(connected_socket):
     return connected_socket.recv(length).decode()
 
 
+
+
 def main():
+    """
+        main connect sockets and handle everything 
+        :returns: None
+    """
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         client_socket.connect((IP, PORT))
