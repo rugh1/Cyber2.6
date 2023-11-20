@@ -108,14 +108,17 @@ def main():
             except socket.error as err:
                 print(err)
                 logging.error("error found in the recv phase: " + str(err))
-                fine = False
+                ok = False
             except Exception as err:
                 print(err)
                 logging.error(str(err))
-                fine = False
+                ok = False
             finally:
                 logging.debug(f"closing connection with client")
-                send(comm, DISCONNECT_MESSAGE)
+                try:
+                    send(comm, DISCONNECT_MESSAGE)
+                except socket.error as err:
+                    logging.error("client probbly crashed good bye msg couldnt send" + str(err))
                 com_exit(comm)
     except socket.error as err:
         print(err)
